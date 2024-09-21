@@ -2,18 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class FireKnight_Controller : MonoBehaviour
 {
     [SerializeField] private float speed;
-    [SerializeField] private float jump = 5;
-    // [SerializeField] private LayerMask groundLayer; 
-    // [SerializeField] private Transform groundCheck; 
+    //[SerializeField] private float jump = 5;
     private Rigidbody2D body;
     private Animator anim;
-    // private bool isGrounded;
-    // private float groundCheckRadius = 0.2f;
-
-    private bool atk_1;
     private void Awake() {
         //Getting the references of components
         body = GetComponent<Rigidbody2D>();
@@ -31,33 +25,15 @@ public class PlayerMovement : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         body.velocity = new Vector2(Input.GetAxis("Horizontal") * speed, body.velocity.y);
 
-        //isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
+        anim.SetBool("run", horizontalInput != 0);
+        
         // Flips the player when it moves left-right
         if(horizontalInput > 0){
-            transform.localScale = new Vector3(4,4,4);
+            transform.localScale = new Vector3(3,3,3);
         }
         else if(horizontalInput < 0){
-            transform.localScale = new Vector3(-4,4,4);
+            transform.localScale = new Vector3(-3,3,3);
         }
-
-        // // New jump Logic
-        // if(Input.GetKeyDown(KeyCode.Space) && isGrounded){
-        //     body.velocity = new Vector2(body.velocity.x, jump );
-        //     anim.SetTrigger("j_up"); // Trigger jump up animation
-        // }
-
-        // // Play fall animation when falling
-        // if(!isGrounded && body.velocity.y < 0){
-        //     anim.SetTrigger("j_down"); // Trigger jump down animation
-        // }
-
-        //earlier Logic to implement Jump but makes player fly by pressing space multiple times
-        if(Input.GetKey(KeyCode.Space)){
-            body.velocity = new Vector2(body.velocity.x, jump );
-        }
-
-        // animations triggers
         if(Input.GetKey(KeyCode.Backspace)){
             anim.SetTrigger("death");
         }
@@ -95,8 +71,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         //Setting animation parameters
-        anim.SetBool("run", horizontalInput != 0);
-        //anim.SetBool("death", death);
-        //anim.SetBool("1_atk", atk_1);
+        
     }
 }
